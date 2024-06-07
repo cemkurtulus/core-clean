@@ -1,0 +1,12 @@
+﻿namespace Infra.Dto
+{
+    public class CustomerDto
+    {
+        public Guid Id { get; set; }
+
+        public required string Name { get; set; }
+        
+        public required string Email { get; set; }
+
+    }
+}
