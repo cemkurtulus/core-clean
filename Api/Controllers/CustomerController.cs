@@ -14,7 +14,7 @@ namespace Api.Controllers
         [HttpGet(Name = "GetCustomer")]
         public CustomerModel Get()
         {
-            return customerService.GetCustomerById(Guid.NewGuid());
+            return customerService.GetCustomerById(Guid.Parse("be7527fa-37a1-49c9-8f4d-5acf5271c1f3"));
         }
     }
 }

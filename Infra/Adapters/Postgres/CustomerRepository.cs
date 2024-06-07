@@ -1,17 +1,22 @@
 ﻿using Infra.Dto;
 using Infra.Interfaces;
+using System;
 
 namespace Infra.Adapters.Postgres
 {
-    public class CustomerRepository : ICustomerRepository
+    public class CustomerRepository(PostgresqlDbContext dbContext) : ICustomerRepository
     {
         public CustomerDto GetCustomerById(Guid id)
         {
-            return new CustomerDto
+            var customer = dbContext.Customers.Find(id);
+
+            return customer == null
+                ? throw new Exception("Customer not found")
+                : new CustomerDto
             {
-                Id = Guid.NewGuid(),
-                Name = "John Doe",
-                Email = "john@email.com",
+                Id = customer.Id,
+                Name = customer.Name,
+                Email = customer.Email,
             };
         }
     }

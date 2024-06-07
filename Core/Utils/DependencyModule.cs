@@ -4,6 +4,11 @@ using Autofac;
 using Infra.Adapters.Postgres;
 using Infra.Interfaces;
 using AutoMapper;
+using Infra.Adapters;
+using Microsoft.Extensions.Configuration;
+using Npgsql;
+using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Utils
 {
@@ -20,8 +25,18 @@ namespace Core.Utils
 
             // Register AutoMapper
             builder.RegisterInstance(mapperConfiguration.CreateMapper()).As<IMapper>().SingleInstance();
+
+            //Register Services
             builder.RegisterType<CustomerService>().As<ICustomerService>().InstancePerDependency();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>().InstancePerDependency();
+
+            // Register DbContext
+            builder.Register(c =>
+            {
+                var config = c.Resolve<IConfiguration>();
+                return new PostgresqlDbContext(config);
+            }).As<PostgresqlDbContext>().InstancePerLifetimeScope();
+
         }
     }
 }
