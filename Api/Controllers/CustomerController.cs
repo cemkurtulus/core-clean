@@ -1,5 +1,6 @@
 using Core.Interfaces;
-using Dto.Model;
+using Core.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -9,9 +10,7 @@ namespace Api.Controllers;
 public class CustomerController(ILogger<CustomerController> logger, ICustomerService customerService)
     : ControllerBase
 {
-    private readonly ILogger<CustomerController> _logger = logger;
-
-    [HttpGet(Name = "GetCustomer")]
+    [HttpGet(Name = "GetCustomer"), Authorize]
     public async Task<IActionResult> Get(Guid id)
     {
         var customer = await customerService.GetCustomerById(id);
@@ -19,14 +18,14 @@ public class CustomerController(ILogger<CustomerController> logger, ICustomerSer
     }
         
     [HttpPost(Name = "CreateCustomer")]
-    public async Task<IActionResult> Post(CreateCustomerModel model)
+    public async Task<IActionResult> Post(CreateCustomerApiModel apiModel)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
         
-        var customerId = await customerService.CreateCustomer(model);
+        var customerId = await customerService.CreateCustomer(apiModel);
         return Ok(customerId);
     }
 }

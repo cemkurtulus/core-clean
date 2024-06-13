@@ -10,6 +10,8 @@ FluentValidation
 
 PostgresSQL
 
+JWT integration
+
 docker-compose up --build
 
 ```
@@ -17,7 +19,9 @@ create table public.customer
 (
     id    uuid    not null,
     name  varchar,
-    email varchar not null
+    email varchar not null,
+    password_salt varchar not null,
+    password varchar not null
 );
 
 alter table public.customer

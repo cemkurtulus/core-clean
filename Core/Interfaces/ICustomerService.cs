@@ -1,11 +1,12 @@
-﻿using Dto.Model;
+﻿using CreateCustomerApiModel = Core.Model.CreateCustomerApiModel;
+using CustomerApiModel = Core.Model.CustomerApiModel;
 
 namespace Core.Interfaces
 {
     public interface ICustomerService
     {
-        public Task<CustomerModel> GetCustomerById(Guid id);
+        public Task<CustomerApiModel> GetCustomerById(Guid id);
         
-        public Task<Guid> CreateCustomer(CreateCustomerModel model);
+        public Task<Guid> CreateCustomer(CreateCustomerApiModel apiModel);
     }
 }

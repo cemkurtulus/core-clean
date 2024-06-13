@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using Dto.Dto;
-using Dto.Model;
+using Infra.Dto;
+using CreateCustomerApiModel = Core.Model.CreateCustomerApiModel;
+using CustomerApiModel = Core.Model.CustomerApiModel;
+using LoginRequestApiModel = Core.Model.LoginRequestApiModel;
 
 
 namespace Core.Utils
@@ -10,10 +12,11 @@ namespace Core.Utils
         public MappingProfile()
         {
             // Infra To Core
-            CreateMap<CustomerDto, CustomerModel>().ReverseMap();
+            CreateMap<CustomerDto, CustomerApiModel>().ReverseMap();
+            CreateMap<LoginRequestDto, LoginRequestApiModel>().ReverseMap();
             
             // Core To Infra
-            CreateMap<CreateCustomerModel, CreateCustomerDto>().ReverseMap();
+            CreateMap<CreateCustomerApiModel, CreateCustomerDto>().ReverseMap();
         }
     }
 }
