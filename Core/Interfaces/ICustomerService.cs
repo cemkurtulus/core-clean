@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Models;
+﻿using Dto.Model;
 
 namespace Core.Interfaces
 {
     public interface ICustomerService
     {
-        public CustomerModel GetCustomerById(Guid id);
+        public Task<CustomerModel> GetCustomerById(Guid id);
+        
+        public Task<Guid> CreateCustomer(CreateCustomerModel model);
     }
 }

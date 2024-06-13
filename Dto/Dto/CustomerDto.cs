@@ -1,4 +1,4 @@
-﻿namespace Infra.Dto
+﻿namespace Dto.Dto
 {
     public class CustomerDto
     {

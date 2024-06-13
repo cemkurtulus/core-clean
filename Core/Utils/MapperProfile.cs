@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using Core.Models;
-using Infra.Dto;
+using Dto.Dto;
+using Dto.Model;
+
 
 namespace Core.Utils
 {
@@ -10,7 +11,9 @@ namespace Core.Utils
         {
             // Infra To Core
             CreateMap<CustomerDto, CustomerModel>().ReverseMap();
-
+            
+            // Core To Infra
+            CreateMap<CreateCustomerModel, CreateCustomerDto>().ReverseMap();
         }
     }
 }

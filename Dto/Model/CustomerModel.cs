@@ -1,4 +1,4 @@
-﻿namespace Core.Models
+﻿namespace Dto.Model
 {
     public class CustomerModel
     {

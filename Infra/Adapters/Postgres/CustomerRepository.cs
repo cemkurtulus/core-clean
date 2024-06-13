@@ -1,14 +1,14 @@
-﻿using Infra.Dto;
+﻿using Dto.Dto;
+using Infra.Adapters.Postgres.Entities;
 using Infra.Interfaces;
-using System;
 
 namespace Infra.Adapters.Postgres
 {
     public class CustomerRepository(PostgresqlDbContext dbContext) : ICustomerRepository
     {
-        public CustomerDto GetCustomerById(Guid id)
+        public async Task<CustomerDto> GetCustomerById(Guid id)
         {
-            var customer = dbContext.Customers.Find(id);
+            var customer = await dbContext.Customers.FindAsync(id);
 
             return customer == null
                 ? throw new Exception("Customer not found")
@@ -18,6 +18,21 @@ namespace Infra.Adapters.Postgres
                 Name = customer.Name,
                 Email = customer.Email,
             };
+        }
+
+        public async Task<Guid> CreateCustomer(CreateCustomerDto model)
+        {
+            var customer = new CustomerEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = model.Name,
+                Email = model.Email,
+            };
+
+            dbContext.Customers.Add(customer);
+            await dbContext.SaveChangesAsync();
+
+            return customer.Id;
         }
     }
 }
