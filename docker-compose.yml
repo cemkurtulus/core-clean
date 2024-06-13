@@ -1,0 +1,19 @@
+﻿services:
+  application:
+    image: application
+    ports:
+      - "80:8080"
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+      
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - /var/lib/postgresql/data
