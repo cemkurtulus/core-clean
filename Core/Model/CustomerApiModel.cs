@@ -1,6 +1,6 @@
-﻿namespace Dto.Model
+﻿namespace Core.Model
 {
-    public class CustomerModel
+    public class CustomerApiModel
     {
         public Guid Id { get; set; }
 

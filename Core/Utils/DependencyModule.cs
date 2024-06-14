@@ -4,9 +4,6 @@ using Autofac;
 using Infra.Adapters.Postgres;
 using Infra.Interfaces;
 using AutoMapper;
-using Dto.Dto;
-using Dto.Model;
-using FluentValidation;
 using Infra.Adapters;
 using Microsoft.Extensions.Configuration;
 
@@ -28,6 +25,7 @@ namespace Core.Utils
             
             //Register Services
             builder.RegisterType<CustomerService>().As<ICustomerService>().InstancePerDependency();
+            builder.RegisterType<AuthService>().As<IAuthService>().InstancePerDependency();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>().InstancePerDependency();
 
             // Register DbContext
