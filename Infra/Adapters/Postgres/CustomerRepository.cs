@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using Infra.Adapters.Postgres.Entities;
+using Infra.Exception;
 using Infra.Interfaces;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,12 @@ namespace Infra.Adapters.Postgres
         public async Task<CustomerDto> GetCustomerById(Guid id)
         {
             var customer = await dbContext.Customers.FindAsync(id);
-
-            return customer == null
-                ? throw new Exception("Customer not found")
-                : new CustomerDto
+            if (customer == null)
+            {
+                throw new NotFoundException("Customer not found");
+            }
+            
+            return new CustomerDto
             {
                 Id = customer.Id,
                 Name = customer.Name,
@@ -55,7 +58,7 @@ namespace Infra.Adapters.Postgres
             var customer = await dbContext.Customers.FirstOrDefaultAsync(x => x.Email == model.Email);
             if (customer == null)
             {
-                throw new Exception("Customer not found");
+                throw new NotFoundException("Customer not found");
             }
             
             var hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -67,7 +70,7 @@ namespace Infra.Adapters.Postgres
             
             if (hashed != customer.Password)
             {
-                throw new Exception("Invalid login credentials");
+                throw new LoginException("Invalid login credentials");
             }
             
             return new CustomerLoginDto {
