@@ -4,6 +4,7 @@ using System.Text;
 using AutoMapper;
 using Core.Interfaces;
 using Infra.Dto;
+using Infra.Exception;
 using Infra.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -18,17 +19,13 @@ public class AuthService(ICustomerRepository customerRepository, IMapper mapper,
     {
         var loginModel = mapper.Map<LoginRequestDto>(requestApi);
         var result = await customerRepository.Login(loginModel);
-
-        if (!result.Status) throw new Exception("Invalid login credentials");
         var authorization = await GenerateToken(result.CustomerId.GetValueOrDefault());
-            
         return new LoginResponseApiModel
         {
             AccessTokenExpireDate = authorization.AccessTokenExpireDate,
             AuthenticateResult= true,
             Token = "Bearer " + authorization.Token
         };
-
     }
 
     private Task<LoginResponseApiModel> GenerateToken(Guid customerId)

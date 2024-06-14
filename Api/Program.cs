@@ -1,6 +1,7 @@
 using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Core.Exception;
 using Core.Model;
 using Core.Utils;
 using FluentValidation;
@@ -56,8 +57,17 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
         containerBuilder.RegisterModule(new DependencyModule());
     });
 
-builder.Services.AddFluentValidationAutoValidation();
+// Exception Handler
+builder.Services.AddExceptionHandler<ExceptionHandler>();
+builder.Services.AddProblemDetails();
+// builder.Services.AddExceptionHandler(options => {  });
 
+// FluentValidation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateCustomerValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestApiModelValidation>();
+
+// Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -78,10 +88,6 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization();
 
-// Register FluentValidation validators
-builder.Services.AddValidatorsFromAssemblyContaining<CreateCustomerValidation>();
-builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestApiModelValidation>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -94,4 +100,5 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseExceptionHandler();
 app.Run();
