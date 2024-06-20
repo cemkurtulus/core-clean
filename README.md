@@ -12,6 +12,8 @@ PostgresSQL
 
 JWT integration
 
+ELK Integration
+
 docker-compose up --build
 
 ```
@@ -26,4 +28,11 @@ create table public.customer
 
 alter table public.customer
     owner to postgres;
+```
+
+.env files
+
+```
+ELASTIC_PASSWORD=
+APM_SECRET_TOKEN=
 ```

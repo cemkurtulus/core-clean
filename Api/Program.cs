@@ -1,16 +1,22 @@
 using System.Text;
+using Api.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Core.Exception;
 using Core.Model;
 using Core.Utils;
+using Elastic.Apm.NetCoreAll;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+// Serilog
+builder.Configuration.RegisterLogger();
+builder.Host.UseSerilog();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -101,4 +107,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.UseExceptionHandler();
+app.UseAllElasticApm(builder.Configuration);
 app.Run();
