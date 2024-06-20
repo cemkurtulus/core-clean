@@ -5,6 +5,7 @@ using Infra.Adapters.Postgres;
 using Infra.Interfaces;
 using AutoMapper;
 using Infra.Adapters;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace Core.Utils

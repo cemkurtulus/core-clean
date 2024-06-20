@@ -12,6 +12,7 @@ public class LoginController(ILogger<CustomerController> logger, IAuthService au
     [HttpPost(Name = "LoginCustomer")]
     public async Task<IActionResult> Login(LoginRequestApiModel loginModel)
     {
+        logger.LogWarning("Hello from LoginController");
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
