@@ -1,4 +1,5 @@
 using System.Text;
+using Api;
 using Api.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Serilog
 builder.Configuration.RegisterLogger();
 builder.Host.UseSerilog();
@@ -21,8 +23,12 @@ builder.Host.UseSerilog();
 // Add services to the container.
 builder.Services.AddControllers();
 
+// Add Rabbit MQ Consumer
+builder.Services.AddHostedService<ConsumerHostedService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 // builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(option =>
 {
@@ -66,7 +72,6 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 // Exception Handler
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
-// builder.Services.AddExceptionHandler(options => {  });
 
 // FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
@@ -108,4 +113,6 @@ app.UseAuthorization();
 app.MapControllers();
 app.UseExceptionHandler();
 app.UseAllElasticApm(builder.Configuration);
+
+
 app.Run();
