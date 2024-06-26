@@ -24,6 +24,10 @@ namespace Core.Utils
             // Register AutoMapper
             builder.RegisterInstance(mapperConfiguration.CreateMapper()).As<IMapper>().SingleInstance();
             
+            // Consumer Register
+            builder.RegisterType<ConsumerService>().As<IConsumerService>().SingleInstance();
+            builder.RegisterType<RabbitMqService>().As<IRabbitMqService>().SingleInstance();
+            
             //Register Services
             builder.RegisterType<CustomerService>().As<ICustomerService>().InstancePerDependency();
             builder.RegisterType<AuthService>().As<IAuthService>().InstancePerDependency();
